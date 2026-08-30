@@ -1,0 +1,30 @@
+services:
+  authserver:
+    image: authplane/authserver:latest
+    command: ["serve"]
+    ports:
+      - "9000:9000"
+      - "127.0.0.1:9001:9001"
+    environment:
+      AUTHPLANE_SERVER_ISSUER: ${PUBLIC_AUTH_URL}
+      AUTHPLANE_STORAGE_SQLITE_PATH: /data/authserver.db
+      AUTHPLANE_SIGNING_KEY_PATH: /data/keys
+      AUTHPLANE_SESSION_SECRET: ${AUTHPLANE_SESSION_SECRET}
+      AUTHPLANE_SESSION_SECURE: "true"
+      AUTHPLANE_ADMIN_API_KEY: ${AUTHPLANE_ADMIN_API_KEY}
+      AUTHPLANE_RESOURCE_URI: ${PUBLIC_APP_URL}/mcp
+      AUTHPLANE_RESOURCE_SCOPES: "contacts:read,contacts:write"
+      AUTHPLANE_RESOURCE_BACKEND_KIND: mint
+      AUTHPLANE_DPOP_ENABLED: ${AUTHPLANE_DPOP_ENABLED:-false}
+      AUTHPLANE_SERVER_ALLOWED_ORIGINS: ${AUTHPLANE_SERVER_ALLOWED_ORIGINS:-*}
+    volumes:
+      - authserver-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/authserver", "version"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  authserver-data:

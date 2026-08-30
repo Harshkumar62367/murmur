@@ -1,0 +1,15 @@
+node_modules
+dist
+.env
+.env.bak
+.env.local
+data
+*.log
+*.db
+*.db-shm
+*.db-wal
+.DS_Store
+.skybridge
+.vercel
+dev.log
+tsconfig.tsbuildinfo

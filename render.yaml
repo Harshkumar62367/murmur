@@ -1,0 +1,56 @@
+services:
+  # 1) AuthPlane authorization server (Docker, port 9000)
+  - type: web
+    name: murmur-authserver
+    runtime: docker
+    dockerfilePath: ./authplane.Dockerfile
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: AUTHPLANE_SERVER_ISSUER
+        value: https://murmur-authserver.onrender.com
+      - key: AUTHPLANE_STORAGE_SQLITE_PATH
+        value: /data/authserver.db
+      - key: AUTHPLANE_SIGNING_KEY_PATH
+        value: /data/keys
+      - key: AUTHPLANE_SESSION_SECRET
+        generateValue: true
+      - key: AUTHPLANE_ADMIN_API_KEY
+        generateValue: true
+      - key: AUTHPLANE_RESOURCE_URI
+        value: https://murmur-app.onrender.com/mcp
+      - key: AUTHPLANE_RESOURCE_SCOPES
+        value: "contacts:read,contacts:write"
+      - key: AUTHPLANE_RESOURCE_BACKEND_KIND
+        value: mint
+      - key: AUTHPLANE_DPOP_ENABLED
+        value: "false"
+      - key: AUTHPLANE_SERVER_ALLOWED_ORIGINS
+        value: "*"
+      - key: AUTHPLANE_SESSION_SECURE
+        value: "true"
+    disk:
+      name: authserver-data
+      mountPath: /data
+      sizeGB: 1
+
+  # 2) Murmur Skybridge MCP App (Node, native start)
+  - type: web
+    name: murmur-app
+    runtime: node
+    rootDir: murmur-app
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    healthCheckPath: /.well-known/oauth-protected-resource/mcp
+    envVars:
+      - key: AUTHPLANE_ISSUER
+        value: https://murmur-authserver.onrender.com
+      - key: SERVER_URL
+        value: https://murmur-app.onrender.com/mcp
+      - key: NODE_ENV
+        value: production
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
+      - key: VITE_CONFIG_NATIVE_IGNORE_WARNING
+        value: "true"

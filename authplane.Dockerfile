@@ -1,0 +1,1 @@
+FROM authplane/authserver:latest
