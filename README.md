@@ -370,15 +370,6 @@ What was hard:
 
 ---
 
-## Submission
-
-- **Video:** unlisted YouTube link in the Demo section above.
-- **Repo:** this repo, public, single root commit.
-- **Form:** https://docs.google.com/forms/d/e/1FAIpQLScOizZ6YgtSly4Indp6JOBHEVGopxULtD0UDWfnoc16C9OIOA/viewform
-- **Deadline:** Mon Aug 31, 2026, 11:59pm local.
-
----
-
 ## License
 
 MIT.
