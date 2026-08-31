@@ -26,25 +26,21 @@ isolation proof by switching to `maya@demo.io`.
 
 ### Screenshots
 
-| Who am I? | AuthPlane consent |
+| Who am I? | Contact card (empty) |
 |---|---|
-| ![identity](docs/screenshots/identity-card.png) | ![consent](docs/screenshots/oauth-consent.png) |
+| ![identity](docs/screenshots/identity-card.jpg) | ![empty](docs/screenshots/contact-card-empty.jpg) |
 
-| Contact card (empty) | Contact card (with note) |
+| Contact card (with note) | Search results |
 |---|---|
-| ![empty](docs/screenshots/contact-card-empty.png) | ![with-note](docs/screenshots/contact-card-with-note.png) |
-
-| Search results | Recent dashboard |
-|---|---|
-| ![search](docs/screenshots/search-results.png) | ![dashboard](docs/screenshots/recent-dashboard.png) |
+| ![with-note](docs/screenshots/contact-card-with-note.jpg) | ![search](docs/screenshots/search-results.jpg) |
 
 | Render Blueprint | E2E test (16 green) | Devtools |
 |---|---|---|
-| ![render](docs/screenshots/render-blueprint.png) | ![e2e](docs/screenshots/e2e-16-green.png) | ![devtools](docs/screenshots/devtools.png) |
+| ![render](docs/screenshots/render-blueprint.jpg) | ![e2e](docs/screenshots/e2e-16-green.jpg) | ![devtools](docs/screenshots/devtools.jpg) |
 
 | Isolation: Maya (empty) |
 |---|
-| ![isolation](docs/screenshots/isolation-maya-empty.png) |
+| ![isolation](docs/screenshots/isolation-maya-empty.jpg) |
 
 ---
 
