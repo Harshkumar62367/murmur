@@ -1,4 +1,4 @@
-# Murmur — Personal CRM MCP App
+﻿# Murmur â€” Personal CRM MCP App
 
 [![AuthPlane](https://img.shields.io/badge/OAuth-2.1-blue)](https://authplane.ai)
 [![Skybridge](https://img.shields.io/badge/MCP_Apps-Skybridge-green)](https://skybridge.tech)
@@ -9,7 +9,7 @@
 
 > A personal CRM that lives inside your chat. Built with
 > [Skybridge](https://skybridge.tech), secured by
-> [AuthPlane](https://authplane.ai), submitted to the **AuthPlane ×
+> [AuthPlane](https://authplane.ai), submitted to the **AuthPlane Ã—
 > Skybridge Speedrun Challenge** ($500, deadline Aug 31, 2026).
 
 **One-liner:** *Your second brain, in your chat.*
@@ -18,7 +18,7 @@
 
 ## Demo
 
-[▶ Watch the 5-minute walkthrough on YouTube](#) *(link to be added)*
+[â–¶ Watch the 5-minute walkthrough on YouTube](#) *(link to be added)*
 
 The video shows the full bring-up, the one-line OAuth wiring, the
 end-to-end test, a live chat session with `harsh@demo.io`, and the
@@ -48,17 +48,17 @@ isolation proof by switching to `maya@demo.io`.
 
 Ask Claude (or ChatGPT) to remember a person, what you talked about,
 and what to follow up on. Murmur stores the note privately. Every
-contact is private to the signed-in user — isolation comes directly
+contact is private to the signed-in user â€” isolation comes directly
 from the OAuth token AuthPlane mints, not from application code.
 
 Example prompts (works in any MCP host):
 
-- *"Add Sam Lee — met at the conference, working on agent identity."*
+- *"Add Sam Lee â€” met at the conference, working on agent identity."*
 - *"We talked about OIDC federation and his new blog post."*
-- *"What did I say about Sam?"* → contact card.
-- *"What was I working on this week?"* → recent-dashboard view.
-- *"Who am I?"* → verified JWT claims on screen.
-- *"What was I working on this week?"* as **Maya** → empty state.
+- *"What did I say about Sam?"* â†’ contact card.
+- *"What was I working on this week?"* â†’ recent-dashboard view.
+- *"Who am I?"* â†’ verified JWT claims on screen.
+- *"What was I working on this week?"* as **Maya** â†’ empty state.
   Same URL, same app, different JWT sub, zero data leakage.
 
 ---
@@ -70,13 +70,13 @@ Example prompts (works in any MCP host):
 | USP | Maps to rubric bucket | Why it matters |
 |---|---|---|
 | **Self-hosted identity for MCP apps.** AuthPlane runs in *your* Docker container. Your tokens, your keys, your AS. No third-party auth vendor. | **AuthPlane setup speed & ease** (25%) + **Story & originality** (10%) | Most MCP apps either skip auth or rely on Clerk/Auth0/WorkOS. We're the only submission wiring a self-hosted OAuth 2.1 server to MCP per the 2025-11-25 spec. |
-| **One-line integration.** `authplaneProvider({ issuer, resource, scopes })` is the whole OAuth layer — discovery, JWKS verification, scope enforcement, DCR. | **Skybridge app quality** (20%) + **Technical correctness** (25%) | Compare to the 200-line verifier + middleware setup most people would write. Three strings to set, one constructor option, framework-enforced scope gating. |
-| **The identity card is the demo.** Ask the model "who am I?" and the *actual* JWT claims appear in the chat — subject, client_id, scopes, expiry, resource. | **AuthPlane setup speed** (25%) + **Video shareability** (20%) | Most demos show tools, not auth. The auth *is* the product. This is the kind of moment judges screenshot. |
+| **One-line integration.** `authplaneProvider({ issuer, resource, scopes })` is the whole OAuth layer â€” discovery, JWKS verification, scope enforcement, DCR. | **Skybridge app quality** (20%) + **Technical correctness** (25%) | Compare to the 200-line verifier + middleware setup most people would write. Three strings to set, one constructor option, framework-enforced scope gating. |
+| **The identity card is the demo.** Ask the model "who am I?" and the *actual* JWT claims appear in the chat â€” subject, client_id, scopes, expiry, resource. | **AuthPlane setup speed** (25%) + **Video shareability** (20%) | Most demos show tools, not auth. The auth *is* the product. This is the kind of moment judges screenshot. |
 
 ### 10-second pitch (for the video)
 
 > "I built a personal CRM that lives inside your chat. Every contact
-> is private to you — not because my code filters it, but because
+> is private to you â€” not because my code filters it, but because
 > the OAuth token literally can't see another user's data. Let me
 > show you."
 
@@ -85,36 +85,36 @@ Example prompts (works in any MCP host):
 ## Architecture
 
 ```
-┌───────────────────────────────────────────────┐
-│           Host (Claude / ChatGPT)             │
-│  - DCR client (Claude/ChatGPT self-register) │
-│  - PKCE-S256 + ES256 JWT bearer              │
-│  - React view sandbox (CSP-restricted iframe)│
-└───────────────┬───────────────────────────────┘
-                │  HTTPS / streamable HTTP
-                │  Authorization: Bearer <JWT>
-                │  /.well-known/oauth-protected-resource/mcp
-                ▼
-┌───────────────────────────────────────────────────────────┐
-│              Murmur  (Skybridge, Node 24)                 │
-│  - runs natively: `npm run dev -- --plain`              │
-│  - authplaneProvider({ issuer, resource, scopes })        │
-│  - 6 tools (who-am-i, add-contact, add-note, search,      │
-│            list-recent, delete-contact)                   │
-│  - 6 views (identity, contact-card, search-results,       │
-│            recent-dashboard, delete-result, note-result)   │
-│  - store: node:sqlite (keyed by JWT sub)                  │
-└───────────────┬───────────────────────────────────────────┘
-                │   discovery, register, authorize, token, jwks
-                ▼
-┌───────────────────────────────────────────────────────────┐
-│   AuthPlane  (Docker: authplane/authserver:latest)       │
-│  - :9000 public OAuth · :9001 admin API (private)         │
-│  - cloudflared quick tunnel → public trycloudflare URL   │
-│  - Resources: murmur (uri, scopes)                        │
-│  - Users: harsh@demo.io, maya@demo.io                     │
-│  - ES256 keys auto-generated, /data bind-mounted          │
-└───────────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚           Host (Claude / ChatGPT)             â”‚
+â”‚  - DCR client (Claude/ChatGPT self-register) â”‚
+â”‚  - PKCE-S256 + ES256 JWT bearer              â”‚
+â”‚  - React view sandbox (CSP-restricted iframe)â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                â”‚  HTTPS / streamable HTTP
+                â”‚  Authorization: Bearer <JWT>
+                â”‚  /.well-known/oauth-protected-resource/mcp
+                â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚              Murmur  (Skybridge, Node 24)                 â”‚
+â”‚  - runs natively: `npm run dev -- --plain`              â”‚
+â”‚  - authplaneProvider({ issuer, resource, scopes })        â”‚
+â”‚  - 6 tools (who-am-i, add-contact, add-note, search,      â”‚
+â”‚            list-recent, delete-contact)                   â”‚
+â”‚  - 6 views (identity, contact-card, search-results,       â”‚
+â”‚            recent-dashboard, delete-result, note-result)   â”‚
+â”‚  - store: node:sqlite (keyed by JWT sub)                  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                â”‚   discovery, register, authorize, token, jwks
+                â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   AuthPlane  (Docker: authplane/authserver:latest)       â”‚
+â”‚  - :9000 public OAuth Â· :9001 admin API (private)         â”‚
+â”‚  - cloudflared quick tunnel â†’ public trycloudflare URL   â”‚
+â”‚  - Resources: murmur (uri, scopes)                        â”‚
+â”‚  - Users: harsh@demo.io, maya@demo.io                     â”‚
+â”‚  - ES256 keys auto-generated, /data bind-mounted          â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 The three-identical-strings contract: the advertised PRM `resource`
@@ -127,29 +127,29 @@ The three-identical-strings contract: the advertised PRM `resource`
 
 ```
 murmur/
-├── README.md
-├── docker-compose.yml          AuthPlane only (the app runs natively)
-├── .env.example
-├── start.sh / start.ps1        Bring up AuthPlane + create demo users
-├── stop.sh                     docker compose down
-├── reset.sh                    Wipe volumes + database
-├── render.yaml                 Render Blueprint (authserver + app, one click)
-├── authplane.Dockerfile        1-line wrapper around authplane/authserver:latest
-├── scripts/
-│   ├── e2e-oauth.mjs           Headless OAuth 2.1 E2E (PRM → DCR → PKCE → token → MCP)
-│   ├── seed.mjs                Seed demo data for harsh@demo.io
-│   └── seed-maya.mjs           Leave maya's ledger empty (for the isolation demo)
-└── murmur-app/                 The Skybridge MCP App (runs natively)
-    ├── package.json
-    ├── tsconfig.json
-    ├── .npmrc                   keeps devDeps at install time
-    ├── vite.config.ts
-    └── src/
-        ├── server.ts            authplaneProvider + 6 tools
-        ├── store.ts             node:sqlite
-        ├── helpers.ts           generateHelpers<AppType>()
-        └── views/               contact-card · search-results · recent-dashboard
-                                  · identity · note-result · delete-result
+â”œâ”€â”€ README.md
+â”œâ”€â”€ docker-compose.yml          AuthPlane only (the app runs natively)
+â”œâ”€â”€ .env.example
+â”œâ”€â”€ start.sh / start.ps1        Bring up AuthPlane + create demo users
+â”œâ”€â”€ stop.sh                     docker compose down
+â”œâ”€â”€ reset.sh                    Wipe volumes + database
+â”œâ”€â”€ render.yaml                 Render Blueprint (authserver + app, one click)
+â”œâ”€â”€ authplane.Dockerfile        1-line wrapper around authplane/authserver:latest
+â”œâ”€â”€ scripts/
+â”‚   â”œâ”€â”€ e2e-oauth.mjs           Headless OAuth 2.1 E2E (PRM â†’ DCR â†’ PKCE â†’ token â†’ MCP)
+â”‚   â”œâ”€â”€ seed.mjs                Seed demo data for harsh@demo.io
+â”‚   â””â”€â”€ seed-maya.mjs           Leave maya's ledger empty (for the isolation demo)
+â””â”€â”€ murmur-app/                 The Skybridge MCP App (runs natively)
+    â”œâ”€â”€ package.json
+    â”œâ”€â”€ tsconfig.json
+    â”œâ”€â”€ .npmrc                   keeps devDeps at install time
+    â”œâ”€â”€ vite.config.ts
+    â””â”€â”€ src/
+        â”œâ”€â”€ server.ts            authplaneProvider + 6 tools
+        â”œâ”€â”€ store.ts             node:sqlite
+        â”œâ”€â”€ helpers.ts           generateHelpers<AppType>()
+        â””â”€â”€ views/               contact-card Â· search-results Â· recent-dashboard
+                                  Â· identity Â· note-result Â· delete-result
 ```
 
 ---
@@ -198,8 +198,8 @@ SERVER_URL=http://localhost:3000/mcp \
 npm run dev -- --plain
 ```
 
-Open the printed dev URL in Claude (Customize → Connectors) or
-ChatGPT (Profile → Apps → Developer mode). Log in with one of the
+Open the printed dev URL in Claude (Customize â†’ Connectors) or
+ChatGPT (Profile â†’ Apps â†’ Developer mode). Log in with one of the
 demo users created by `start.sh` / `start.ps1`.
 
 ---
@@ -207,22 +207,22 @@ demo users created by `start.sh` / `start.ps1`.
 ## Deploy on Render (one Blueprint, two services)
 
 The repo ships a `render.yaml` that provisions both services. Render
-dashboard → **New** → **Blueprint** → pick the repo. It will create:
+dashboard â†’ **New** â†’ **Blueprint** â†’ pick the repo. It will create:
 
-- `murmur-authserver` — the AuthPlane authorization server (Docker,
+- `murmur-authserver` â€” the AuthPlane authorization server (Docker,
   upstream `authplane/authserver:latest`, persistent disk at `/data`).
-- `murmur-app` — the Skybridge MCP App (Node, native `npm run start`).
+- `murmur-app` â€” the Skybridge MCP App (Node, native `npm run start`).
 
 After the first deploy, copy each service's public URL and update the
 **other** service's env vars so the two URLs line up:
 
-- `murmur-authserver` → `AUTHPLANE_SERVER_ISSUER` = its own URL,
+- `murmur-authserver` â†’ `AUTHPLANE_SERVER_ISSUER` = its own URL,
   `AUTHPLANE_RESOURCE_URI` = `https://<app>/mcp`
-- `murmur-app` → `AUTHPLANE_ISSUER` = the authserver URL,
+- `murmur-app` â†’ `AUTHPLANE_ISSUER` = the authserver URL,
   `SERVER_URL` = `https://<app>/mcp`
 
 Then **Manual Deploy** on both. Free tier sleeps after 15 min of
-inactivity — the first OAuth handshake takes ~30s to wake the service.
+inactivity â€” the first OAuth handshake takes ~30s to wake the service.
 
 The live deployment backing this submission:
 
@@ -237,40 +237,40 @@ The live deployment backing this submission:
 node scripts/e2e-oauth.mjs --headless --user harsh
 ```
 
-The script walks PRM discovery → AS metadata → DCR → PKCE-S256 →
-login → consent → token exchange → scope-gated tool calls. Sixteen
+The script walks PRM discovery â†’ AS metadata â†’ DCR â†’ PKCE-S256 â†’
+login â†’ consent â†’ token exchange â†’ scope-gated tool calls. Sixteen
 green checkmarks means the OAuth stack is wired correctly.
 
-Per-user isolation: log in as `maya`, search "Sam" → no results
+Per-user isolation: log in as `maya`, search "Sam" â†’ no results
 (`harsh`'s contacts aren't visible). Isolation comes from the JWT
 `sub` claim, not from a `WHERE user_id = ?` filter we wrote.
 
 The full e2e log against the deployed stack:
 
 ```
-=== Murmur × AuthPlane scripted OAuth flow ===
+=== Murmur Ã— AuthPlane scripted OAuth flow ===
 AS: https://murmur-authserver.onrender.com
 RS: https://murmur-app.onrender.com/mcp
 Login as: harsh@demo.io (headless)
 
-✓ 1.  DCR — client registered
-✓ 2.  PKCE — S256 challenge ready
-✓ 3.  authorize → 303 (login redirect)
-✓ 4.  login → 303 (authorize with auth code)
-✓ 5.  consent approved → 303
-✓ 6.  Authorization code captured
-✓ 7.  Token exchange — JWT issued
+âœ“ 1.  DCR â€” client registered
+âœ“ 2.  PKCE â€” S256 challenge ready
+âœ“ 3.  authorize â†’ 303 (login redirect)
+âœ“ 4.  login â†’ 303 (authorize with auth code)
+âœ“ 5.  consent approved â†’ 303
+âœ“ 6.  Authorization code captured
+âœ“ 7.  Token exchange â€” JWT issued
        sub=egVrTTqmX6U6kO_wKqZTZA  aud=https://murmur-app.onrender.com/mcp
        scope=contacts:read contacts:write
-✓ 8.  MCP initialize — murmur v0.1.0
-✓ 9.  tools/list — 6 tools returned
-✓ 10. add-contact — Added "Sam Lee"
-✓ 11. add-note — Noted on Sam Lee
-✓ 12. search-contacts — Found 1 contact
-✓ 13. list-recent — 1 most recent
-✓ 14. delete-contact — Deleted
-✓ 15. list-recent (after delete) — No contacts yet
-✓ 16. who-am-i — Signed in as Harsh via OAuth client
+âœ“ 8.  MCP initialize â€” murmur v0.1.0
+âœ“ 9.  tools/list â€” 6 tools returned
+âœ“ 10. add-contact â€” Added "Sam Lee"
+âœ“ 11. add-note â€” Noted on Sam Lee
+âœ“ 12. search-contacts â€” Found 1 contact
+âœ“ 13. list-recent â€” 1 most recent
+âœ“ 14. delete-contact â€” Deleted
+âœ“ 15. list-recent (after delete) â€” No contacts yet
+âœ“ 16. who-am-i â€” Signed in as Harsh via OAuth client
 ```
 
 ---
@@ -290,18 +290,18 @@ oauth: await authplaneProvider<MurmurClaims>({
 
 What that one constructor does internally:
 
-1. **Discovery** — fetches `/.well-known/oauth-protected-resource/mcp`
+1. **Discovery** â€” fetches `/.well-known/oauth-protected-resource/mcp`
    and `/.well-known/oauth-authorization-server` to learn the
    authserver URL and its advertised features.
-2. **JWKS caching** — pulls `/.well-known/jwks.json`, caches the
+2. **JWKS caching** â€” pulls `/.well-known/jwks.json`, caches the
    public key, rotates on `kid` miss.
-3. **Bearer middleware** — on every `/mcp` request, validates the
+3. **Bearer middleware** â€” on every `/mcp` request, validates the
    JWT against the cached JWKS, checks `iss`, `aud`, `exp`, `nbf`,
    and that the granted `scope` includes the tool's required scope.
-4. **DCR acceptance** — accepts any client that registers via
+4. **DCR acceptance** â€” accepts any client that registers via
    `POST /oauth/register` (no pre-provisioning needed for hosts like
    Claude and ChatGPT).
-5. **Per-tool scope gating** — when a tool is declared with
+5. **Per-tool scope gating** â€” when a tool is declared with
    `auth: { scopes: ["contacts:write"] }`, the framework rejects
    invocations whose token doesn't carry that scope.
 
@@ -321,7 +321,7 @@ everything" path.
 
 ```ts
 async ({ name, context }, extra) => {
-  const userKey = subjectOf(extra);  // ← JWT.sub, never trusted from input
+  const userKey = subjectOf(extra);  // â† JWT.sub, never trusted from input
   const c = dbAddContact(userKey, name, context);
   ...
 }
@@ -329,8 +329,8 @@ async ({ name, context }, extra) => {
 
 Even if Maya's chat somehow requested `Harsh`'s contact id, the
 SQLite `WHERE user_key = ?` clause would return zero rows because
-Harsh's `user_key` ≠ Maya's `user_key`. The token literally cannot
-represent Harsh's data — that's the security property the OAuth
+Harsh's `user_key` â‰  Maya's `user_key`. The token literally cannot
+represent Harsh's data â€” that's the security property the OAuth
 spec was designed for, and the property the demo makes visible.
 
 ---
@@ -356,7 +356,7 @@ What was hard:
   registered `uri` = JWT `aud`) is unforgiving. One trailing
   whitespace and you get a 401 with no useful error message. We
   spent more time debugging env-var typos than writing the app.
-- The AuthPlane upstream image is distroless — no shell, no apk,
+- The AuthPlane upstream image is distroless â€” no shell, no apk,
   no `bash`. We tried to add a user-seed entrypoint to the Docker
   image and the container failed to start with
   `exec: "/bin/sh": stat /bin/sh: no such file or directory`.
@@ -373,3 +373,4 @@ What was hard:
 ## License
 
 MIT.
+
