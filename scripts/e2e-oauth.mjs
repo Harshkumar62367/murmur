@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * SplitTab × AuthPlane — scripted end-to-end OAuth 2.1 flow.
+ * Murmur × AuthPlane — scripted end-to-end OAuth 2.1 flow.
  *
  * Exercises the exact wire moves Claude/ChatGPT make:
  *   1. DCR  — register this script as an OAuth client (RFC 7591)
@@ -14,8 +14,13 @@
  *   node scripts/e2e-oauth.mjs [--headless] [--user harsh|maya|<email>] \
  *       [--password <pw>] [--browser]
  *
- * Defaults: AS http://localhost:9000 · RS http://localhost:3001/mcp
- *           headless login harsh@demo.io / speedrun-demo-1
+ * Defaults: AS https://murmur-authserver.onrender.com
+ *           RS https://murmur-app.onrender.com/mcp
+ *           headless login harsh@demo.io / speedrun-demo
+ *
+ * Override with env vars:
+ *   AUTHPLANE_ISSUER=https://your-as  SERVER_URL=https://your-app/mcp \
+ *       node scripts/e2e-oauth.mjs --headless --user maya
  */
 
 import http from "node:http";
@@ -34,8 +39,8 @@ const CALLBACK_PORT = Number(flag("port") || 9999);
 const REDIRECT_URI = `http://localhost:${CALLBACK_PORT}/callback`;
 const USER =
   flag("user") === "maya" ? "maya@demo.io"
-  : flag("user") === "harsh" ? "harsh@demo.io"
-  : (flag("as") || flag("user") || "harsh@demo.io");
+    : flag("user") === "harsh" ? "harsh@demo.io"
+      : (flag("as") || flag("user") || "harsh@demo.io");
 const PASSWORD =
   flag("password") ||
   (USER === "maya@demo.io" ? "speedrun-demo" : USER === "harsh@demo.io" ? "speedrun-demo" : "");
@@ -100,7 +105,7 @@ function formFields(html) {
 }
 
 async function main() {
-  log(`\n=== SplitTab × AuthPlane scripted OAuth flow ===`);
+  log(`\n=== AuthPlane scripted OAuth flow ===`);
   log(`AS: ${AS}\nRS: ${RS}\nLogin as: ${USER} (${HEADLESS ? "headless" : "browser"})\n`);
 
   // 1. Dynamic Client Registration
