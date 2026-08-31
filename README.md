@@ -4,7 +4,7 @@
 [![Skybridge](https://img.shields.io/badge/MCP_Apps-Skybridge-green)](https://skybridge.tech)
 [![MCP](https://img.shields.io/badge/Model_Context_Protocol-2025--11--25-orange)](https://modelcontextprotocol.io)
 [![Self--hosted](https://img.shields.io/badge/Self--hosted-identity-purple)](https://github.com/AuthPlane/authserver)
-[![Live demo](https://img.shields.io/badge/YouTube-demo-red)](https://github.com/Harshkumar62367/murmur#demo)
+[![Live demo](https://img.shields.io/badge/YouTube-demo-red)](https://youtu.be/Nu5Q5zCm0GY)
 [![Deploy](https://img.shields.io/badge/Deploy-Render-46e3b7)](https://render.com)
 
 A personal CRM that lives inside your chat. Built with
@@ -18,7 +18,7 @@ Skybridge Speedrun Challenge** ($500, deadline Aug 31, 2026).
 
 ## Demo
 
-[>> Watch the 5-minute walkthrough on YouTube](#) *(link to be added)*
+[>> Watch the 5-minute walkthrough on YouTube](https://youtu.be/Nu5Q5zCm0GY)
 
 The video shows the full bring-up, the one-line OAuth wiring, the
 end-to-end test, a live chat session with `harsh@demo.io`, and the
