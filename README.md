@@ -360,6 +360,26 @@ What was hard:
   we couldn't have a one-command "deploy + seed users" flow. The
   e2e script + a small SSH bootstrap is the cleanest workaround
   for free-tier deployments.
+- Codex desktop renders MCP App views inside a cross-origin
+  iframe (`web-sandbox.oaiusercontent.com`) with a CSP of
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval'`. Skybridge's
+  view JS is served from the MCP origin, so `script-src 'self'`
+  resolves to `oaiusercontent.com` and blocks the view bundle.
+  Tool calls work end-to-end (16/16 e2e green) but the view
+  body renders empty. Same behavior in dev, prod build, and
+  Vercel deploy. Filed in
+  [AuthPlane #7](https://github.com/orgs/AuthPlane/discussions/7).
+  Workaround for the demo: Skybridge's built-in devtools host,
+  which is same-origin to the view bundle.
+- ChatGPT (`chatgpt.com`) does not currently support custom MCP
+  servers for Free or Plus personal accounts -- per the OpenAI
+  help center, full MCP is "only available to Business and
+  Enterprise/Edu users." Pro accounts can connect but with
+  read-only restrictions. That narrows the Speedrun Challenge
+  rule 4 ("Connect it in Claude or ChatGPT") to Claude.ai for
+  Free/Plus submitters. We confirmed Claude.ai custom
+  connectors accept the PRM + DCR flow; for the video we used
+  Codex + devtools for the actual rendering surface.
 
 ---
 
