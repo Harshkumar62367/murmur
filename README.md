@@ -369,8 +369,10 @@ What was hard:
   body renders empty. Same behavior in dev, prod build, and
   Vercel deploy. Filed in
   [AuthPlane #7](https://github.com/orgs/AuthPlane/discussions/7).
-  Workaround for the demo: Skybridge's built-in devtools host,
-  which is same-origin to the view bundle.
+  Workaround for the demo: Skybridge's devtools UI mounted
+  against the deployed Render URL
+  (`https://murmur-app.onrender.com/__/`), which is same-origin
+  to the view bundle so the CSP allows it.
 - ChatGPT (`chatgpt.com`) does not currently support custom MCP
   servers for Free or Plus personal accounts -- per the OpenAI
   help center, full MCP is "only available to Business and
