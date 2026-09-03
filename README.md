@@ -10,7 +10,7 @@
 A personal CRM that lives inside your chat. Built with
 [Skybridge](https://skybridge.tech), secured by
 [AuthPlane](https://authplane.ai), submitted to the **AuthPlane x
-Skybridge Speedrun Challenge** ($500, deadline Aug 31, 2026).
+Skybridge Speedrun Challenge**.
 
 **One-liner:** *Your second brain, in your chat.*
 
@@ -44,6 +44,50 @@ isolation proof by switching to `maya@demo.io`.
 
 ---
 
+## Test it
+
+The live deployment is open. Two demo accounts, one is empty (for
+the isolation proof), the other has seed data.
+
+**Live URLs**
+
+- App: `https://murmur-app.onrender.com/mcp`
+- AuthPlane AS: `https://murmur-authserver.onrender.com`
+
+**Demo accounts**
+
+| Email | Password | Has data? |
+|---|---|---|
+| `harsh@demo.io` | `speedrun-demo` | yes (1 contact, Sam Lee) |
+| `maya@demo.io`  | `speedrun-demo` | no (empty) |
+
+**Three ways to test it**
+
+1. **Skybridge DevTools (easiest, no install)** -- open
+   `https://murmur-app.onrender.com/__/` in a regular browser tab.
+   Sign in with one of the demo accounts. Chat with the model,
+   watch the views render, call any of the 6 tools.
+2. **Codex desktop** -- Settings -> Connectors -> Add Connector.
+   URL: `https://murmur-app.onrender.com/mcp`. Click through the
+   OAuth flow, log in as `harsh@demo.io` or `maya@demo.io`.
+3. **Headless e2e** -- from the repo root:
+   ```bash
+   node scripts/e2e-oauth.mjs --headless --user harsh
+   ```
+   Walks the full OAuth chain (DCR, PKCE, login, consent, token,
+   tool calls) and prints 16 green checkmarks.
+
+**Isolation test**
+
+Log in as `harsh@demo.io`, add a contact, log out, log in as
+`maya@demo.io`, search for the same name -- no results. Same
+database, different JWT, zero data leakage.
+
+**Heads-up:** First request can take a couple of seconds if the
+service has been idle.
+
+---
+
 ## What this does
 
 Ask Claude (or ChatGPT) to remember a person, what you talked about,
@@ -63,15 +107,27 @@ Example prompts (works in any MCP host):
 
 ---
 
-## Why Murmur (the pitch)
+## Design notes
 
-### Three USPs, mapped to the challenge rubric
+**Self-hosted identity.** AuthPlane runs in our own Docker
+container. The token-signing keys live in `/data`, the user
+database is in the same `/data` volume, and the only public
+endpoint is the OAuth one. Nothing leaves our infrastructure --
+no Clerk, no Auth0, no third-party identity vendor.
 
-| USP | Maps to rubric bucket | Why it matters |
-|---|---|---|
-| **Self-hosted identity for MCP apps.** AuthPlane runs in *your* Docker container. Your tokens, your keys, your AS. No third-party auth vendor. | **AuthPlane setup speed & ease** (25%) + **Story & originality** (10%) | Most MCP apps either skip auth or rely on Clerk/Auth0/WorkOS. We're the only submission wiring a self-hosted OAuth 2.1 server to MCP per the 2025-11-25 spec. |
-| **One-line integration.** `authplaneProvider({ issuer, resource, scopes })` is the whole OAuth layer -- discovery, JWKS verification, scope enforcement, DCR. | **Skybridge app quality** (20%) + **Technical correctness** (25%) | Compare to the 200-line verifier + middleware setup most people would write. Three strings to set, one constructor option, framework-enforced scope gating. |
-| **The identity card is the demo.** Ask the model "who am I?" and the *actual* JWT claims appear in the chat -- subject, client_id, scopes, expiry, resource. | **AuthPlane setup speed** (25%) + **Video shareability** (20%) | Most demos show tools, not auth. The auth *is* the product. This is the kind of moment judges screenshot. |
+**One-line OAuth wiring.** The Skybridge framework exposes
+`authplaneProvider` as a first-class OAuth provider. Our entire
+auth layer is three config strings and one constructor option:
+discovery, JWKS verification, scope enforcement, and DCR
+acceptance are all handled by the framework. We did not write
+a JWT verifier, a middleware, or a scope checker.
+
+**Per-user isolation by token, not by filter.** Every store
+query in `src/store.ts` takes a `user_key` derived from the
+JWT's `sub` claim. There is no global lookup path and no admin
+override. The `who-am-i` tool exposes the verified claims on
+screen, so the auth itself is the visible feature, not a hidden
+implementation detail.
 
 ---
 
@@ -382,6 +438,16 @@ What was hard:
   Free/Plus submitters. We confirmed Claude.ai custom
   connectors accept the PRM + DCR flow; for the video we used
   Codex + devtools for the actual rendering surface.
+- Codex desktop caches the registered client and the issued
+  access token across logins, so the "switch user to prove
+  isolation" beat of our demo required forcing a fresh OAuth
+  handshake. The Disconnect button in Codex's connector UI
+  cleared the token, but the cached DCR client still matched
+  the next login and skipped the consent screen. The reliable
+  reset was to delete the client on the authserver with
+  `DELETE /admin/clients/<id>?force=true` (private network
+  only), then re-add the connector in Codex. Worth documenting
+  if you want submitters to demo per-user isolation cleanly.
 
 ---
 
